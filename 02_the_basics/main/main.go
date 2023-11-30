@@ -2,24 +2,21 @@ package main
 
 import "fmt"
 
-type op func(int, int) int
-
-func doIt(fn op, a, b int) int {
-	return fn(a, b)
-}
-
-func sum(a, b int) int {
-	return a + b
-}
-
-func sub(a, b int) int {
-	return a - b
+func accum(delta int) func() int {
+	i := 0
+	return func() int {
+		i += delta
+		return i
+	}
 }
 
 func main() {
-	sum := doIt(sum, 2, 3)
-	sub := doIt(sub, 2, 3)
+	byOne := accum(1)
+	byTwo := accum(2)
 
-	fmt.Println(sum)
-	fmt.Println(sub)
+	for i := 0; i < 5; i++ {
+		fmt.Println(byTwo())
+		fmt.Println(byOne())
+		fmt.Printf("-------\n")
+	}
 }
